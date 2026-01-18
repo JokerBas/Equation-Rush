@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>180 IQ คิดเลขเร็ว</title>
+    <link rel="stylesheet" href="style.css"> 
+</head>
+<body>
+
+    <div id="game-container">
+        <div id="language-toggle">
+            <button id="lang-th" class="lang-button active" data-lang="th">TH</button>
+            <button id="lang-en" class="lang-button" data-lang="en">EN</button>
+        </div>
+        
+        <div id="game-logo-area">
+            <h1 id="title-h1">Equation Rush</h1>
+            <p id="subtitle-p">180 IQ Game</p>
+        </div>
+        <hr>
+
+        <div id="menu-screen" class="screen active">
+            <h2 data-i18n="mode_title">โหมดการเล่น</h2>
+            <button id="custom-mode-button" class="mode-button secondary-button" data-i18n="custom_mode">⚙️ Sandbox Mode</button>
+            <button id="solo-mode-button" class="mode-button primary-button" data-i18n="solo_mode">👤 เล่นคนเดียว (Solo)</button>
+            <button class="mode-button secondary-button" disabled data-i18n="multi_mode">👥 เล่นหลายคน (Coming Soon)</button>
+            <p class="small-text" data-i18n="solo_info">เลือก "เล่นคนเดียว" เพื่อเข้าสู่โหมดด่าน</p>
+        </div>
+
+        <div id="setup-screen" class="screen">
+            <h2 data-i18n="setup_title">ตั้งค่าเกม</h2>
+            
+            <div class="setup-group">
+                <label data-i18n="select_target">เป้าหมาย (Target):</label>
+                <select id="setup-target-type">
+                    <option value="24">24 Game (Fixed)</option>
+                    <option value="2digits">2 Digits (10-99)</option>
+                    <option value="3digits">3 Digits (100-999)</option>
+                    <option value="4digits">4 Digits (1000-9999) 💀</option> 
+                </select>
+            </div>
+
+            <div class="setup-group">
+                <label data-i18n="select_numbers">จำนวนตัวเลข:</label>
+                <select id="setup-number-count">
+                    <option value="4">4 ตัว</option>
+                    <option value="5" selected>5 ตัว (มาตรฐาน)</option>
+                    <option value="6">6 ตัว (ยาก)</option>
+                </select>
+            </div>
+
+            <div class="setup-group">
+                <label data-i18n="select_time">เวลาจำกัด:</label>
+                <select id="setup-time">
+                    <option value="60">1 นาที</option>
+                    <option value="120">2 นาที</option>
+                    <option value="180" selected>3 นาที</option>
+                    <option value="300">5 นาที</option>
+                </select>
+            </div>
+
+            <button id="start-custom-game-button" class="primary-button" data-i18n="start_game">เริ่มเกม</button>
+            <button id="back-from-setup-button" class="secondary-button" data-i18n="back_menu">ย้อนกลับ</button>
+        </div>
+
+        <div id="level-screen" class="screen">
+            <h2 id="current-level-title">โหมดด่าน (Level 1)</h2>
+            <p id="level-description" class="level-desc"></p>
+            
+            <div class="level-info-box">
+                <p> <span data-i18n="target">เป้าหมาย</span>: <span id="level-target-range"></span></p>
+                <p> <span data-i18n="numbers">ตัวเลข</span>: <span id="level-number-count"></span> <span data-i18n="numbers_unit">ตัว</span></p>
+                <p> <span data-i18n="time_limit">เวลา</span>: <span id="level-time-limit"></span></p>
+            </div>
+            
+            <button id="start-level-button" class="primary-button" data-i18n="start_level">เริ่มด่านนี้!</button>
+            <button id="back-to-menu-button" class="secondary-button" data-i18n="back_menu">ย้อนกลับ</button>
+        </div>
+
+        <div id="game-play-screen" class="screen">
+            <div id="game-header">
+                <div id="level-display" data-i18n-prefix="level_prefix">ด่าน: 1</div>
+                <div id="score-display">🏆 <span data-i18n="score_prefix">คะแนน:</span> <span id="current-score">0</span></div>
+            </div>
+            
+            <div id="timer-display-box">
+                <div id="timer-display" class="timer">⏳ 00:00</div>
+            </div>
+            
+            <hr>
+            
+            <div id="target-block">
+                <span id="target-number" data-i18n-prefix="target_prefix" class="target-number">???</span>
+            </div>
+            
+            <div id="input-numbers-container"></div>
+            
+            <hr>
+
+            <input type="text" id="equation-input" placeholder="สมการของคุณ เช่น (5*10) + 8">
+
+            <div id="math-symbol-buttons">
+                <button class="math-symbol-button" data-symbol="**" data-i18n-title="power">^</button>
+                <button class="math-symbol-button" data-symbol="Math.sqrt(" data-i18n-title="sqrt">√</button>
+                <button class="math-symbol-button" data-symbol="fact" data-i18n-title="factorial">!</button>
+                <button class="math-symbol-button" data-symbol="(">(</button>
+                <button class="math-symbol-button" data-symbol=")">)</button>
+            </div>
+
+            <button id="submit-button" class="primary-button" data-i18n="submit">ส่งคำตอบ</button>
+            
+            <div id="shuffle-section">
+                <button id="shuffle-button" class="secondary-button" data-i18n="shuffle">สุ่มเลขใหม่</button>
+                <p id="shuffle-limit-text" class="small-text"></p>
+            </div>
+
+            <p id="result-text" class="message"></p>
+            
+            <button id="next-level-button" class="primary-button" style="display: none;" data-i18n="next_level">▶️ ไปด่านถัดไป</button>
+            <button id="back-to-levels-button" class="secondary-button" style="display: none;" data-i18n="back_menu">ย้อนกลับเมนูหลัก</button>
+        </div>
+        
+    </div>
+
+    <script src="game.js"></script> 
+</body>
+</html>

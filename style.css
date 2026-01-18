@@ -1,0 +1,365 @@
+/* style.css (ฉบับปรับปรุง UI) */
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding: 10px;
+    text-align: center;
+    background-color: #f0f2f5; /* Light Gray Background */
+    color: #333;
+    transition: background-color 0.3s;
+}
+
+#game-container {
+    max-width: 450px; /* ขยายความกว้างขึ้นเล็กน้อย */
+    margin: 20px auto;
+    padding: 25px;
+    background-color: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    color: #4CAF50; /* Primary Green */
+    margin-bottom: 5px;
+    font-size: 2em;
+}
+
+hr {
+    border: none;
+    border-top: 2px solid #eee;
+    margin: 15px 0;
+}
+
+/* === Game Header & Info Boxes === */
+#game-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+#level-display, #score-display {
+    background-color: #e0f7fa; /* Light Blue for Info */
+    padding: 8px 12px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* === Target Block === */
+#target-block {
+    background-color: #ffeb3b; /* Bright Yellow Background */
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.target-number {
+    font-size: 2.5em;
+    font-weight: 900;
+    color: #333;
+}
+.loading-text {
+    font-size: 2.5em;
+    font-weight: 900;
+    color: #888;
+    animation: pulse 1.5s infinite;
+}
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+
+/* === Timer Display === */
+#timer-display-box {
+    margin: 10px 0;
+}
+.timer {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #ff9800; /* Orange for urgency */
+}
+
+/* === Input and Buttons General === */
+#equation-input {
+    width: 95%;
+    padding: 12px;
+    margin: 15px 0;
+    font-size: 1.2em;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    text-align: center;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+#equation-input:focus {
+    border-color: #4CAF50;
+    box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+    outline: none;
+}
+
+/* === Number Buttons === */
+#input-numbers-container {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin: 15px 0;
+    flex-wrap: wrap;
+}
+
+.number-button {
+    padding: 12px 18px;
+    font-size: 1.5em;
+    font-weight: bold;
+    cursor: pointer;
+    background-color: #4CAF50; /* Primary Green */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    transition: background-color 0.2s, box-shadow 0.2s;
+    min-width: 50px;
+    box-shadow: 0 3px #1e7e34; /* 3D effect */
+}
+
+.number-button:active:not(:disabled) {
+    box-shadow: 0 1px #1e7e34;
+    transform: translateY(2px);
+}
+
+.number-button:disabled {
+    background-color: #bdbdbd; /* Light Gray when used */
+    color: #757575;
+    box-shadow: 0 3px #9e9e9e;
+    cursor: not-allowed;
+    opacity: 0.8;
+}
+
+/* === Math Symbols === */
+#math-symbol-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin: 15px 0;
+    flex-wrap: wrap;
+}
+
+.math-symbol-button {
+    padding: 10px 15px;
+    font-size: 1.1em;
+    cursor: pointer;
+    background-color: #e0e0e0;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    transition: background-color 0.2s;
+}
+
+.math-symbol-button:hover {
+    background-color: #d0d0d0;
+}
+
+
+/* === Main Action Buttons === */
+.primary-button, .secondary-button, .mode-button {
+    width: 95%;
+    padding: 12px 20px;
+    margin-top: 10px;
+    font-size: 1.2em;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px #555;
+}
+
+.primary-button {
+    background-color: #4CAF50; /* Green */
+    color: white;
+    box-shadow: 0 4px #1e7e34;
+}
+
+.primary-button:hover:not(:disabled) {
+    background-color: #5cb85c;
+}
+.primary-button:active:not(:disabled) {
+    box-shadow: 0 1px #1e7e34;
+    transform: translateY(3px);
+}
+
+.secondary-button {
+    background-color: #f8f9fa; /* Light Gray/White */
+    color: #333;
+    border: 2px solid #ccc;
+    box-shadow: 0 4px #999;
+}
+.secondary-button:active:not(:disabled) {
+    box-shadow: 0 1px #999;
+    transform: translateY(3px);
+}
+
+/* Disabled State */
+.primary-button:disabled, .secondary-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    box-shadow: 0 4px #ccc;
+}
+
+
+/* === Messages and Status === */
+.message {
+    padding: 10px;
+    margin: 15px 0;
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+/* === Screen Management (CSS) === */
+.screen {
+    display: none;
+    padding-top: 10px;
+}
+.screen.active {
+    display: block;
+}
+
+/* === Level Info Box === */
+.level-info-box {
+    background-color: #f0f0f0;
+    border-radius: 10px;
+    padding: 15px;
+    margin: 20px 0;
+    text-align: left;
+}
+.level-info-box p {
+    margin: 5px 0;
+    font-size: 1.1em;
+}
+.level-desc {
+    font-style: italic;
+    color: #6c757d;
+}
+
+/* === Shuffle Section === */
+#shuffle-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+#shuffle-button {
+    width: 50%;
+    padding: 8px 15px;
+    font-size: 1em;
+    margin: 0;
+}
+#shuffle-limit-text {
+    width: 40%;
+    margin: 0;
+    font-weight: bold;
+    color: #007bff;
+}
+
+.small-text {
+    font-size: 0.9em;
+    color: #666;
+    margin: 10px 0;
+}
+
+/* Language Toggle */
+#language-toggle {
+    text-align: right;
+    margin-bottom: 10px;
+}
+.lang-button {
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    background: #fff;
+    cursor: pointer;
+    border-radius: 5px;
+}
+.lang-button.active {
+    background-color: #4CAF50;
+    color: white;
+    border-color: #1e7e34;
+}
+.setup-group {
+    margin: 15px 0;
+    text-align: left;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.setup-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #4CAF50;
+}
+
+.setup-group select {
+    width: 100%;
+    padding: 10px;
+    font-size: 1.1em;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    background-color: white;
+}
+
+.setup-group select:focus {
+    border-color: #4CAF50;
+    outline: none;
+}
+.icon-button {
+    background: none;
+    border: none;
+    font-size: 1.5em;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+.icon-button:hover { transform: scale(1.2); }
+
+#stat-display {
+    font-weight: bold;
+    color: #007bff;
+    background: #e7f3ff;
+    padding: 5px 15px;
+    border-radius: 20px;
+}
+
+#game-logo-area {
+    margin-bottom: 20px;
+}
+
+#title-h1 {
+    color: #4CAF50;
+    margin: 0;
+    font-size: 2.8em; /* ใหญ่และเด่น */
+    font-weight: 900;
+    letter-spacing: -1px;
+    text-transform: uppercase;
+}
+
+#subtitle-p {
+    color: #666;
+    margin: -5px 0 0 0;
+    font-size: 1.2em;
+    font-weight: bold;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
