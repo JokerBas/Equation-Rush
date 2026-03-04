@@ -15,6 +15,11 @@ export function compareResult(a, b) {
     return Math.abs(a - b) < 0.001;
 }
 
+// nth root functions — ส่งเป็น parameter เข้า new Function ใน validation
+export function root2(x) { return Math.sqrt(x); }
+export function root3(x) { return Math.cbrt(x); }
+export function root4(x) { return Math.pow(x, 0.25); }
+
 export function insertAtCaret(inputElement, text) {
     const start = inputElement.selectionStart;
     const end = inputElement.selectionEnd;

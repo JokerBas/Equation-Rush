@@ -65,12 +65,10 @@ function addEventListeners() {
     });
 
     // --- Math Symbol Buttons ---
+    // data-symbol คือ text ที่จะ insert โดยตรง (fact(, root2(, **, (, ) ฯลฯ)
     dom.mathSymbolButtons.forEach(button => {
         button.addEventListener('click', () => {
-            const symbol = button.getAttribute('data-symbol');
-            // 'fact' ต้องเพิ่ม '(' ตามหลัง, 'Math.sqrt(' มี '(' อยู่แล้ว
-            const text = symbol === 'fact' ? 'fact(' : symbol;
-            insertAtCaret(dom.equationInput, text);
+            insertAtCaret(dom.equationInput, button.getAttribute('data-symbol'));
         });
     });
 
@@ -105,7 +103,7 @@ function addEventListeners() {
             insertAtCaret(dom.equationInput, 'fact(');
         } else if (key === 'r' || key === 'R') {
             e.preventDefault();
-            insertAtCaret(dom.equationInput, 'Math.sqrt(');
+            insertAtCaret(dom.equationInput, 'root2(');
         } else if (key === '^') {
             e.preventDefault();
             insertAtCaret(dom.equationInput, '**');

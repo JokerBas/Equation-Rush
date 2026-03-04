@@ -38,10 +38,9 @@ export function setLanguage(lang) {
 
     dom.mathSymbolButtons.forEach(button => {
         const symbol = button.getAttribute('data-symbol');
-        if (symbol === 'fact') button.textContent = t.factorial;
-        else if (symbol === 'Math.sqrt(') button.textContent = t.sqrt;
+        // เฉพาะ ! และ ^ ที่มีการแปลภาษา, ปุ่มอื่น (√2 √3 √4 ( )) คงข้อความเดิม
+        if (symbol === 'fact(') button.textContent = t.factorial;
         else if (symbol === '**') button.textContent = t.power;
-        else button.textContent = symbol;
     });
 
     dom.langButtons.forEach(btn => btn.classList.remove('active'));
