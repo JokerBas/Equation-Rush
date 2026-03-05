@@ -1,10 +1,11 @@
 // js/timer.js
-// ฟังก์ชันจัดการตัวจับเวลา และ handleTimeUp
+// ฟังก์ชันจัดการตัวจับเวลา: countdown (solo) และ stopwatch (sandbox)
 
 import { state } from './state.js';
 import { dom } from './dom.js';
 import { TRANSLATIONS } from './config.js';
 
+// --- Countdown (Solo Mode) ---
 export function updateTimerDisplay() {
     const minutes = Math.floor(state.timeRemaining / 60);
     const seconds = state.timeRemaining % 60;
@@ -26,6 +27,24 @@ export function startTimer(duration) {
     }, 1000);
 }
 
+// --- Stopwatch (Sandbox Mode) ---
+export function updateStopwatchDisplay() {
+    const minutes = Math.floor(state.elapsedTime / 60);
+    const seconds = state.elapsedTime % 60;
+    dom.timerDisplay.textContent = `⏱ ${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+}
+
+export function startStopwatch() {
+    clearInterval(state.timerInterval);
+    updateStopwatchDisplay();
+
+    state.timerInterval = setInterval(() => {
+        state.elapsedTime++;
+        updateStopwatchDisplay();
+    }, 1000);
+}
+
+// --- Shared ---
 export function stopTimer() {
     clearInterval(state.timerInterval);
 }

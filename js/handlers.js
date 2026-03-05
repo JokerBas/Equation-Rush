@@ -5,7 +5,16 @@ import { state } from './state.js';
 import { dom } from './dom.js';
 import { TRANSLATIONS, LEVELS } from './config.js';
 import { validateEquation } from './validation.js';
-import { stopTimer, startTimer } from './timer.js';
+import { stopTimer, startTimer, startStopwatch } from './timer.js';
+import { saveScore } from './leaderboard.js';
+
+function resumeTimer() {
+    if (state.gameMode === 'custom') {
+        startStopwatch();
+    } else {
+        startTimer(state.timeRemaining);
+    }
+}
 
 export function handleSubmit() {
     const t = TRANSLATIONS[state.currentLanguage];
@@ -28,7 +37,7 @@ export function handleSubmit() {
     if (!equation) {
         dom.resultTextEl.textContent = t.placeholder;
         dom.resultTextEl.className = 'error';
-        startTimer(state.timeRemaining);
+        resumeTimer();
         return;
     }
 
@@ -38,27 +47,56 @@ export function handleSubmit() {
         dom.resultTextEl.textContent = result;
         dom.resultTextEl.className = 'success';
         dom.submitButton.disabled = true;
-        dom.shuffleButton.disabled = true;
 
-        state.currentScore += (state.gameMode === 'level' ? state.currentLevel : 1) * 100 + state.timeRemaining;
-        dom.currentScoreEl.textContent = state.currentScore;
+        if (state.gameMode === 'custom') {
+            // Sandbox: ไม่ disable shuffle — ผู้เล่นสามารถ shuffle เพื่อเล่นปริศนาต่อได้
+            // คำนวณคะแนนความเร็ว: ยิ่งเร็วยิ่งได้เยอะ
+            const speedScore = Math.max(50, 600 - state.elapsedTime);
+            state.currentScore += speedScore;
+            dom.currentScoreEl.textContent = state.currentScore;
 
-        const isLastLevel = state.gameMode !== 'level' || state.currentLevel >= LEVELS.length;
-        if (!isLastLevel) {
-            dom.nextLevelButton.style.display = 'block';
-            dom.backToLevelsButton.style.display = 'none';
-        } else {
-            dom.resultTextEl.textContent += state.gameMode === 'level'
-                ? ` ${t.final_win}`
-                : ` (ยอดเยี่ยม! กด "สุ่มเลขใหม่" เพื่อเล่นต่อ)`;
+            // แสดงเวลาที่ใช้
+            const m = String(Math.floor(state.elapsedTime / 60)).padStart(2, '0');
+            const s = String(state.elapsedTime % 60).padStart(2, '0');
+            dom.resultTextEl.textContent += ` ${t.sandbox_time_result(`${m}:${s}`)}`;
+
+            // บันทึกลง Leaderboard
+            saveScore('sandbox', {
+                time: state.elapsedTime,
+                target: state.targetNumber,
+                date: new Date().toLocaleDateString(),
+            });
+
             dom.nextLevelButton.style.display = 'none';
             dom.backToLevelsButton.style.display = 'block';
+        } else {
+            // Solo mode
+            dom.shuffleButton.disabled = true;
+            state.currentScore += state.currentLevel * 100 + state.timeRemaining;
+            dom.currentScoreEl.textContent = state.currentScore;
+
+            const isLastLevel = state.currentLevel >= LEVELS.length;
+            if (!isLastLevel) {
+                dom.nextLevelButton.style.display = 'block';
+                dom.backToLevelsButton.style.display = 'none';
+            } else {
+                dom.resultTextEl.textContent += ` ${t.final_win}`;
+                dom.nextLevelButton.style.display = 'none';
+                dom.backToLevelsButton.style.display = 'block';
+
+                // บันทึกลง Solo Leaderboard เมื่อผ่านครบทุกด่าน
+                saveScore('solo', {
+                    score: state.currentScore,
+                    maxLevel: state.currentLevel,
+                    date: new Date().toLocaleDateString(),
+                });
+            }
         }
     } else {
         dom.resultTextEl.textContent = `ERROR: ${result}`;
         dom.resultTextEl.className = 'error';
         document.querySelectorAll('.number-button').forEach(btn => btn.disabled = false);
-        startTimer(state.timeRemaining);
+        resumeTimer();
     }
 }
 

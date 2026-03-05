@@ -5,7 +5,7 @@ import { state } from './state.js';
 import { dom } from './dom.js';
 import { TRANSLATIONS, LEVELS } from './config.js';
 import { showScreen, createNumberButtons, updateShuffleDisplay } from './ui.js';
-import { startTimer, stopTimer } from './timer.js';
+import { startTimer, startStopwatch, stopTimer } from './timer.js';
 
 export function generateNewGame(levelConfig, maintainTime = false) {
     const t = TRANSLATIONS[state.currentLanguage];
@@ -34,6 +34,7 @@ export function generateNewGame(levelConfig, maintainTime = false) {
 
         state.targetNumber = newTarget;
         state.inputNumbers = newNumbers;
+        state.gameStartTime = Date.now(); // บันทึกเวลาเริ่มปริศนา (anti-cheat)
 
         dom.targetNumberEl.textContent = `${t.target_prefix} ${state.targetNumber}`;
         dom.targetNumberEl.classList.add('target-number');
@@ -50,7 +51,15 @@ export function generateNewGame(levelConfig, maintainTime = false) {
         updateShuffleDisplay();
 
         stopTimer();
-        startTimer(maintainTime ? state.timeRemaining : levelConfig.timeLimitSeconds);
+
+        if (state.gameMode === 'custom') {
+            // Sandbox: ใช้ stopwatch นับขึ้น
+            if (!maintainTime) state.elapsedTime = 0;
+            startStopwatch();
+        } else {
+            // Solo: ใช้ countdown
+            startTimer(maintainTime ? state.timeRemaining : levelConfig.timeLimitSeconds);
+        }
 
         state.activeWorker.terminate();
         state.activeWorker = null;

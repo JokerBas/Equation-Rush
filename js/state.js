@@ -6,7 +6,9 @@ export const state = {
     targetNumber: 0,
     inputNumbers: [],
     currentLevel: 1,
-    timeRemaining: 0,
+    timeRemaining: 0,    // countdown (solo mode)
+    elapsedTime: 0,      // stopwatch (sandbox mode)
+    gameStartTime: 0,    // timestamp เมื่อปริศนาเริ่ม (anti-cheat reference)
     timerInterval: null,
     shufflesRemaining: 2,
     currentLanguage: 'th',

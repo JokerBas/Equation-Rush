@@ -363,3 +363,174 @@ hr {
     letter-spacing: 2px;
     text-transform: uppercase;
 }
+/* === Leaderboard === */
+.lb-tabs {
+    display: flex;
+    gap: 0;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 2px solid #4CAF50;
+}
+
+.lb-tab {
+    flex: 1;
+    padding: 10px;
+    font-size: 1em;
+    font-weight: bold;
+    background-color: #f8f9fa;
+    color: #333;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.lb-tab.active {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.lb-content {
+    display: none;
+    margin-bottom: 10px;
+}
+
+.lb-content.active {
+    display: block;
+}
+
+.lb-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95em;
+}
+
+.lb-table th {
+    background-color: #4CAF50;
+    color: white;
+    padding: 8px 6px;
+    text-align: center;
+}
+
+.lb-table td {
+    padding: 7px 6px;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+}
+
+.lb-table tr:last-child td {
+    border-bottom: none;
+}
+
+.lb-gold td {
+    background-color: #fff8dc;
+    font-weight: bold;
+}
+
+.lb-gold td:first-child::before {
+    content: '🥇 ';
+}
+
+.lb-empty {
+    color: #888;
+    font-style: italic;
+    padding: 20px 0;
+}
+
+/* === Scratchpad Toggle Button === */
+.scratchpad-toggle-btn {
+    position: absolute;
+    right: -13px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: #4CAF50;
+    color: white;
+    border: 2px solid #1e7e34;
+    font-size: 1em;
+    cursor: pointer;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+    transition: background-color 0.2s, transform 0.2s;
+    z-index: 100;
+    display: none; /* hidden unless game screen is active */
+}
+
+#game-play-screen.active .scratchpad-toggle-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.scratchpad-toggle-btn:hover {
+    background-color: #388e3c;
+}
+
+/* === Scratchpad Panel === */
+#scratchpad-panel {
+    position: fixed;
+    top: 0;
+    right: -320px;
+    width: 300px;
+    height: 100%;
+    background-color: #fff;
+    box-shadow: -4px 0 15px rgba(0,0,0,0.15);
+    display: flex;
+    flex-direction: column;
+    transition: right 0.3s ease;
+    z-index: 1000;
+}
+
+#scratchpad-panel.open {
+    right: 0;
+}
+
+#scratchpad-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 15px;
+    background-color: #4CAF50;
+    color: white;
+    font-weight: bold;
+    font-size: 1.05em;
+}
+
+.scratchpad-header-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.scratchpad-action-btn {
+    background: rgba(255,255,255,0.2);
+    border: 1px solid rgba(255,255,255,0.4);
+    color: white;
+    padding: 4px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.2s;
+}
+
+.scratchpad-action-btn:hover {
+    background: rgba(255,255,255,0.35);
+}
+
+#scratchpad-textarea {
+    flex: 1;
+    padding: 15px;
+    border: none;
+    resize: none;
+    font-size: 1em;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    outline: none;
+    color: #333;
+    background-color: #fafafa;
+}
+
+/* game-container needs relative positioning for the toggle button */
+#game-container {
+    position: relative;
+}

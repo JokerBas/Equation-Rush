@@ -3,12 +3,15 @@
 
 import { state } from './state.js';
 import { dom } from './dom.js';
-import { LEVELS } from './config.js';
-import { showScreen, setLanguage, showLevelScreen } from './ui.js';
+import { LEVELS, TRANSLATIONS } from './config.js';
+import { showScreen, setLanguage, showLevelScreen, showLeaderboardScreen } from './ui.js';
 import { startGameForLevel, generateNewGame } from './puzzle.js';
 import { handleSubmit, buildCustomConfig } from './handlers.js';
 import { stopTimer } from './timer.js';
 import { insertAtCaret } from './utils.js';
+import { clearScores } from './leaderboard.js';
+import { initScratchpad } from './scratchpad.js';
+import { initAntiCheat } from './anticheat.js';
 
 function addEventListeners() {
 
@@ -50,6 +53,31 @@ function addEventListeners() {
         generateNewGame(customConfig, false);
     });
 
+    // --- Leaderboard ---
+    if (dom.leaderboardButton) dom.leaderboardButton.addEventListener('click', showLeaderboardScreen);
+    if (dom.backFromLeaderboard) dom.backFromLeaderboard.addEventListener('click', () => showScreen(dom.menuScreen));
+
+    // Tab switching inside leaderboard
+    dom.lbTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            dom.lbTabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            const mode = tab.getAttribute('data-mode');
+            document.querySelectorAll('.lb-content').forEach(c => c.classList.remove('active'));
+            const target = document.getElementById(`lb-${mode}`);
+            if (target) target.classList.add('active');
+        });
+    });
+
+    // Clear leaderboard
+    if (dom.lbClearButton) dom.lbClearButton.addEventListener('click', () => {
+        const t = TRANSLATIONS[state.currentLanguage];
+        if (confirm(t.lb_clear_confirm)) {
+            clearScores();
+            showLeaderboardScreen();
+        }
+    });
+
     // --- Submit ---
     dom.submitButton.addEventListener('click', handleSubmit);
 
@@ -61,11 +89,13 @@ function addEventListeners() {
         const currentConfig = state.gameMode === 'custom'
             ? buildCustomConfig()
             : LEVELS.find(l => l.id === state.currentLevel);
-        generateNewGame(currentConfig, true); // true = ใช้เวลาเดิม
+        // Sandbox: reset stopwatch (new puzzle = new timing challenge)
+        // Solo: maintain remaining time
+        const maintainTime = state.gameMode !== 'custom';
+        generateNewGame(currentConfig, maintainTime);
     });
 
     // --- Math Symbol Buttons ---
-    // data-symbol คือ text ที่จะ insert โดยตรง (fact(, root2(, **, (, ) ฯลฯ)
     dom.mathSymbolButtons.forEach(button => {
         button.addEventListener('click', () => {
             insertAtCaret(dom.equationInput, button.getAttribute('data-symbol'));
@@ -108,11 +138,12 @@ function addEventListeners() {
             e.preventDefault();
             insertAtCaret(dom.equationInput, '**');
         }
-        // + - * / ( ) ปล่อยให้ browser จัดการตามปกติ
     });
 }
 
 // Initialize
 addEventListeners();
+initScratchpad();
+initAntiCheat();
 setLanguage(state.currentLanguage);
 showScreen(dom.menuScreen);

@@ -1,16 +1,19 @@
 // js/ui.js
-// ฟังก์ชัน UI: จัดการหน้าจอ, ภาษา, ปุ่มตัวเลข, และ Level Screen
+// ฟังก์ชัน UI: จัดการหน้าจอ, ภาษา, ปุ่มตัวเลข, Level Screen และ Leaderboard
 
 import { state } from './state.js';
 import { dom } from './dom.js';
 import { TRANSLATIONS, LEVELS } from './config.js';
 import { insertAtCaret } from './utils.js';
+import { getScores } from './leaderboard.js';
 
 export function showScreen(screen) {
-    [dom.menuScreen, dom.levelScreen, dom.gamePlayScreen, dom.setupScreen].forEach(el => {
+    [dom.menuScreen, dom.levelScreen, dom.gamePlayScreen, dom.setupScreen, dom.leaderboardScreen].forEach(el => {
         if (el) el.classList.remove('active');
     });
     if (screen) screen.classList.add('active');
+    // ปิด scratchpad ทุกครั้งที่เปลี่ยนหน้าจอ
+    if (dom.scratchpadPanel) dom.scratchpadPanel.classList.remove('open');
 }
 
 export function setLanguage(lang) {
@@ -24,6 +27,7 @@ export function setLanguage(lang) {
 
     dom.equationInput.placeholder = t.placeholder;
     dom.currentScoreEl.textContent = state.currentScore;
+    if (dom.scratchpadTextarea) dom.scratchpadTextarea.placeholder = t.scratchpad_placeholder;
 
     document.querySelectorAll('[data-i18n]').forEach(el => {
         el.textContent = t[el.getAttribute('data-i18n')];
@@ -38,7 +42,6 @@ export function setLanguage(lang) {
 
     dom.mathSymbolButtons.forEach(button => {
         const symbol = button.getAttribute('data-symbol');
-        // เฉพาะ ! และ ^ ที่มีการแปลภาษา, ปุ่มอื่น (√2 √3 √4 ( )) คงข้อความเดิม
         if (symbol === 'fact(') button.textContent = t.factorial;
         else if (symbol === '**') button.textContent = t.power;
     });
@@ -53,6 +56,11 @@ export function setLanguage(lang) {
         dom.levelDisplay.textContent = state.gameMode === 'custom'
             ? (lang === 'th' ? 'โหมด: กำหนดเอง' : 'Mode: Custom')
             : `${t.level_prefix} ${state.currentLevel}`;
+    }
+
+    if (dom.leaderboardScreen && dom.leaderboardScreen.classList.contains('active')) {
+        _renderLeaderboard('solo');
+        _renderLeaderboard('sandbox');
     }
 }
 
@@ -100,4 +108,54 @@ export function showLevelScreen() {
     dom.levelTimeLimit.textContent = seconds > 0
         ? `${t.time_unit_min(minutes)} ${t.time_unit_sec(seconds)}`
         : t.time_unit_min(minutes);
+}
+
+export function showLeaderboardScreen() {
+    showScreen(dom.leaderboardScreen);
+    _renderLeaderboard('solo');
+    _renderLeaderboard('sandbox');
+}
+
+function _renderLeaderboard(mode) {
+    const t = TRANSLATIONS[state.currentLanguage];
+    const scores = getScores(mode);
+    const container = mode === 'solo' ? dom.lbSoloContent : dom.lbSandboxContent;
+    if (!container) return;
+
+    if (scores.length === 0) {
+        container.innerHTML = `<p class="lb-empty">${t.lb_empty}</p>`;
+        return;
+    }
+
+    if (mode === 'solo') {
+        const rows = scores.map((e, i) => `
+            <tr class="${i === 0 ? 'lb-gold' : ''}">
+                <td>${i + 1}</td>
+                <td>${e.score.toLocaleString()}</td>
+                <td>${e.maxLevel}</td>
+                <td>${e.date}</td>
+            </tr>`).join('');
+        container.innerHTML = `
+            <table class="lb-table">
+                <thead><tr><th>#</th><th>${t.lb_score}</th><th>${t.lb_level}</th><th>${t.lb_date}</th></tr></thead>
+                <tbody>${rows}</tbody>
+            </table>`;
+    } else {
+        const rows = scores.map((e, i) => {
+            const m = String(Math.floor(e.time / 60)).padStart(2, '0');
+            const s = String(e.time % 60).padStart(2, '0');
+            return `
+            <tr class="${i === 0 ? 'lb-gold' : ''}">
+                <td>${i + 1}</td>
+                <td>${m}:${s}</td>
+                <td>${e.target}</td>
+                <td>${e.date}</td>
+            </tr>`;
+        }).join('');
+        container.innerHTML = `
+            <table class="lb-table">
+                <thead><tr><th>#</th><th>${t.lb_time_col}</th><th>Target</th><th>${t.lb_date}</th></tr></thead>
+                <tbody>${rows}</tbody>
+            </table>`;
+    }
 }

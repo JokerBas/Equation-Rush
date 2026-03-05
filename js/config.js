@@ -52,6 +52,26 @@ export const TRANSLATIONS = {
         level_9_desc: "ทดสอบสุดท้าย: เป้าหมาย 3 หลัก (500-999), 5 ตัวเลข, 1:30 นาที",
         level_10_desc: "THE FINAL CHALLENGE: เป้าหมาย 3 หลัก (500-999), 5 ตัวเลข, 1:30 นาที",
     },
+        // Leaderboard
+        leaderboard: "🏆 ตารางคะแนน",
+        lb_solo_tab: "Solo",
+        lb_sandbox_tab: "Sandbox",
+        lb_empty: "ยังไม่มีคะแนน เล่นก่อนนะ!",
+        lb_score: "คะแนน",
+        lb_level: "ด่านสูงสุด",
+        lb_time_col: "เวลา",
+        lb_date: "วันที่",
+        lb_clear: "🗑 ล้างคะแนน",
+        lb_clear_confirm: "ล้างคะแนนทั้งหมดใช่ไหม?",
+        // Sandbox
+        sandbox_time_result: (t) => `แก้ได้ใน ${t}! 🎉 กด "สุ่มเลขใหม่" เพื่อเล่นต่อ`,
+        // Anti-cheat
+        cheat_tab: "⚠️ เปลี่ยนแท็บ! เวลาถูกหยุดชั่วคราว — กลับมาแล้ว เวลาเดิน",
+        // Scratchpad
+        scratchpad_title: "📝 กระดานทด",
+        scratchpad_placeholder: "ใช้พื้นที่นี้คิดเลข...",
+        scratchpad_clear: "ล้าง",
+    },
     en: {
         title: "Equation Rush",
         subtitle: "180 IQ",
@@ -101,6 +121,26 @@ export const TRANSLATIONS = {
         level_8_desc: "Hardest: 3-digit target (500-999), 5 numbers, 1:30 minutes.",
         level_9_desc: "Final Test: 3-digit target (500-999), 5 numbers, 1:30 minutes.",
         level_10_desc: "THE FINAL CHALLENGE: 3-digit target (500-999), 5 numbers, 1:30 minutes.",
+    ,
+        // Leaderboard
+        leaderboard: "🏆 Leaderboard",
+        lb_solo_tab: "Solo",
+        lb_sandbox_tab: "Sandbox",
+        lb_empty: "No scores yet. Play first!",
+        lb_score: "Score",
+        lb_level: "Max Level",
+        lb_time_col: "Time",
+        lb_date: "Date",
+        lb_clear: "🗑 Clear Scores",
+        lb_clear_confirm: "Clear all scores?",
+        // Sandbox
+        sandbox_time_result: (t) => `Solved in ${t}! 🎉 Shuffle for a new puzzle`,
+        // Anti-cheat
+        cheat_tab: "⚠️ Tab switched! Timer paused — welcome back, timer resumes",
+        // Scratchpad
+        scratchpad_title: "📝 Scratch Pad",
+        scratchpad_placeholder: "Use this space to calculate...",
+        scratchpad_clear: "Clear",
     }
 };
 
