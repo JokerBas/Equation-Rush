@@ -25,7 +25,20 @@
             <button id="custom-mode-button" class="mode-button secondary-button" data-i18n="custom_mode">⚙️ Sandbox Mode</button>
             <button id="solo-mode-button" class="mode-button primary-button" data-i18n="solo_mode">👤 เล่นคนเดียว (Solo)</button>
             <button class="mode-button secondary-button" disabled data-i18n="multi_mode">👥 เล่นหลายคน (Coming Soon)</button>
+            <button id="leaderboard-button" class="mode-button secondary-button" data-i18n="leaderboard">🏅 Leaderboard</button>
             <p class="small-text" data-i18n="solo_info">เลือก "เล่นคนเดียว" เพื่อเข้าสู่โหมดด่าน</p>
+        </div>
+
+        <div id="leaderboard-screen" class="screen">
+            <h2 data-i18n="leaderboard">🏅 Leaderboard</h2>
+            <div class="lb-tabs">
+                <button class="lb-tab active" data-mode="solo" data-i18n="lb_solo_tab">Solo</button>
+                <button class="lb-tab" data-mode="sandbox" data-i18n="lb_sandbox_tab">Sandbox</button>
+            </div>
+            <div id="lb-solo" class="lb-content active"></div>
+            <div id="lb-sandbox" class="lb-content"></div>
+            <button id="lb-clear-button" class="secondary-button" data-i18n="lb_clear">ล้างข้อมูล</button>
+            <button id="back-from-leaderboard" class="secondary-button" data-i18n="back_menu">ย้อนกลับ</button>
         </div>
 
         <div id="setup-screen" class="screen">
@@ -79,6 +92,7 @@
         </div>
 
         <div id="game-play-screen" class="screen">
+            <button id="scratchpad-toggle" class="scratchpad-toggle-btn" title="Scratch Pad">✏️</button>
             <div id="game-header">
                 <div id="level-display" data-i18n-prefix="level_prefix">ด่าน: 1</div>
                 <div id="score-display">🏆 <span data-i18n="score_prefix">คะแนน:</span> <span id="current-score">0</span></div>
@@ -101,9 +115,11 @@
             <input type="text" id="equation-input" placeholder="สมการของคุณ เช่น (5*10) + 8">
 
             <div id="math-symbol-buttons">
-                <button class="math-symbol-button" data-symbol="**" data-i18n-title="power">^</button>
-                <button class="math-symbol-button" data-symbol="Math.sqrt(" data-i18n-title="sqrt">√</button>
-                <button class="math-symbol-button" data-symbol="fact" data-i18n-title="factorial">!</button>
+                <button class="math-symbol-button" data-symbol="**">^</button>
+                <button class="math-symbol-button" data-symbol="root2(">√2</button>
+                <button class="math-symbol-button" data-symbol="root3(">√3</button>
+                <button class="math-symbol-button" data-symbol="root4(">√4</button>
+                <button class="math-symbol-button" data-symbol="fact(">!</button>
                 <button class="math-symbol-button" data-symbol="(">(</button>
                 <button class="math-symbol-button" data-symbol=")">)</button>
             </div>
@@ -123,6 +139,18 @@
         
     </div>
 
-    <script src="game.js"></script> 
+    <!-- Scratchpad Panel -->
+    <div id="scratchpad-panel">
+        <div id="scratchpad-header">
+            <span data-i18n="scratchpad_title">✏️ กระดานทด</span>
+            <div class="scratchpad-header-actions">
+                <button id="scratchpad-clear" class="scratchpad-action-btn" data-i18n="scratchpad_clear">ล้าง</button>
+                <button id="scratchpad-close" class="scratchpad-action-btn">✕</button>
+            </div>
+        </div>
+        <textarea id="scratchpad-textarea" placeholder="ทดเลขตรงนี้..."></textarea>
+    </div>
+
+    <script type="module" src="js/main.js"></script>
 </body>
 </html>
